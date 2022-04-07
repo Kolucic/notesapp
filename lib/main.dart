@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:noteapp/pages/login.dart';
 
 void main() async {
@@ -14,10 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'My Notes',
-      theme: ThemeData.dark().copyWith(
+      theme: ThemeData.light().copyWith(
         primaryColor: Colors.white,
-        accentColor: Colors.white,
-        scaffoldBackgroundColor: Color(0xff070706),
       ),
       home: LoginPage(),
     );
