@@ -20,9 +20,9 @@ class _HomePageState extends State<HomePage> {
       .collection('notes');
 
   List<Color> myColors = [
-    Colors.yellow[200],
+    Colors.orange[100],
     Colors.red[200],
-    Colors.green[200],
+    Colors.grey[350],
     Colors.deepPurple[200],
   ];
 
@@ -71,6 +71,16 @@ class _HomePageState extends State<HomePage> {
         future: ref.get(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            if (snapshot.data.docs.length == 0) {
+              return Center(
+                child: Text(
+                  "Non hai note !",
+                  style: TextStyle(
+                    color: Colors.white70,
+                  ),
+                ),
+              );
+            }
             return ListView.builder(
               itemCount: snapshot.data?.docs.length,
               itemBuilder: (context, index) {
@@ -85,14 +95,15 @@ class _HomePageState extends State<HomePage> {
                     Navigator.of(context)
                         .push(
                       MaterialPageRoute(
-                        builder: (context) => ViewNote(data, formattedTime,
-                            snapshot.data.docs[index].reference),
+                        builder: (context) => ViewNote(
+                          data,
+                          formattedTime,
+                          snapshot.data.docs[index].reference,
+                        ),
                       ),
                     )
                         .then((value) {
-                      setState(() {
-                        {}
-                      });
+                      setState(() {});
                     });
                   },
                   child: Card(
@@ -103,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "${data}['title']",
+                            "${data['title']}",
                             style: TextStyle(
                               fontSize: 24.0,
                               fontFamily: "lato",
