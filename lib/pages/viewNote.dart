@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:noteapp/utils/color_constant.dart';
 
 class ViewNote extends StatefulWidget {
   final Map data;
@@ -32,92 +33,82 @@ class _ViewNoteState extends State<ViewNote> {
                   Icons.save_rounded,
                   color: Colors.white,
                 ),
-                backgroundColor: Colors.grey[700],
+
+                backgroundColor: ColorConstant.orange700,
               )
             : null,
         resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          backgroundColor: ColorConstant.whiteA700,
+          elevation: 0,
+          title: TextFormField(
+            decoration: InputDecoration.collapsed(
+              hintText: "Title",
+            ),
+            style: TextStyle(
+              fontSize: 26.0,
+              fontFamily: "Red Hat Display",
+              fontWeight: FontWeight.bold,
+              color: Colors.grey,
+            ),
+            initialValue: widget.data['title'],
+            enabled: edit,
+            onChanged: (_val) {
+              title = _val;
+            },
+            validator: (_val) {
+              if (_val.isEmpty) {
+                return "Can't be empty !";
+              } else {
+                return null;
+              }
+            },
+          ),
+          leading: FloatingActionButton(
+            backgroundColor: ColorConstant.whiteA700,
+            elevation: 0.0,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: IconButton(
+              icon: Image.asset("assets/images/arrow_back_black_24dp 2.png"),
+            ),
+          ),
+
+          actions: <Widget>[
+            FloatingActionButton(
+              backgroundColor: ColorConstant.whiteA700,
+              elevation: 0.0,
+              onPressed: () {
+                setState(() {
+                  edit = !edit;
+                });
+              },
+
+              child: IconButton(
+                icon: Image.asset("assets/images/Vector.png"),
+              ),
+            ),
+            FloatingActionButton(
+              backgroundColor: ColorConstant.whiteA700,
+              elevation: 0.0,
+              onPressed: delete,
+              child: IconButton(
+
+                icon: Image.asset("assets/images/delete_black_24dp 3.png"),
+
+              ),
+
+            ),
+
+          ],
+
+        ),
         body: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(12.0),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Icon(
-                        Icons.arrow_back_ios_new_outlined,
-                        size: 24.0,
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          Colors.grey[700],
-                        ),
-                        padding: MaterialStateProperty.all(
-                          EdgeInsets.symmetric(
-                            horizontal: 25.0,
-                            vertical: 8.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              edit = !edit;
-                            });
-                          },
-                          child: Icon(
-                            Icons.edit,
-                            size: 24.0,
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              Colors.grey[700],
-                            ),
-                            padding: MaterialStateProperty.all(
-                              EdgeInsets.symmetric(
-                                horizontal: 15.0,
-                                vertical: 8.0,
-                              ),
-                            ),
-                          ),
-                        ),
-                        //
-                        SizedBox(
-                          width: 8.0,
-                        ),
-                        //
-                        ElevatedButton(
-                          onPressed: delete,
-                          child: Icon(
-                            Icons.delete_forever,
-                            size: 24.0,
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              Colors.red[300],
-                            ),
-                            padding: MaterialStateProperty.all(
-                              EdgeInsets.symmetric(
-                                horizontal: 25.0,
-                                vertical: 8.0,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 12.0,
-                ),
                 Form(
                   key: key,
                   child: Column(
@@ -125,52 +116,11 @@ class _ViewNoteState extends State<ViewNote> {
                     children: [
                       TextFormField(
                         decoration: InputDecoration.collapsed(
-                          hintText: "Title",
-                        ),
-                        style: TextStyle(
-                          fontSize: 32.0,
-                          fontFamily: "lato",
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
-                        ),
-                        initialValue: widget.data['title'],
-                        enabled: edit,
-                        onChanged: (_val) {
-                          title = _val;
-                        },
-                        validator: (_val) {
-                          if (_val.isEmpty) {
-                            return "Can't be empty !";
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                      //
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 12.0,
-                          bottom: 12.0,
-                        ),
-                        child: Text(
-                          widget.time,
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            fontFamily: "lato",
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-
-                      //
-
-                      TextFormField(
-                        decoration: InputDecoration.collapsed(
                           hintText: "Note Description",
                         ),
                         style: TextStyle(
-                          fontSize: 20.0,
-                          fontFamily: "lato",
+                          fontSize: 18.0,
+                          fontFamily: "Red Hat Text",
                           color: Colors.grey,
                         ),
                         initialValue: widget.data['description'],
