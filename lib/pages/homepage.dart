@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 import 'package:noteapp/pages/addNote.dart';
 import 'package:noteapp/pages/login.dart';
@@ -24,6 +24,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  final _auth = FirebaseAuth.instance;
+
+
   CollectionReference ref = FirebaseFirestore.instance
       .collection('users')
       .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -84,28 +88,26 @@ class _HomePageState extends State<HomePage> {
           ),
           elevation: 0.0,
           backgroundColor: ColorConstant.whiteA700,
-          leading: Padding(
-            padding: EdgeInsets.only(right: 2.0),
-            child: FloatingActionButton(
-              backgroundColor: ColorConstant.orange700,
-              onPressed: () {
-                showAlertDialog(context);
-              },
-              child: CircleAvatar(
-                backgroundImage: (CachedNetworkImageProvider(
-                  widget._user.photoURL,
-                )),
+            leading: Container(),
+            actions: <Widget>[
+              Padding(
+                padding:  EdgeInsets.only( left: 20.0),
+                child: IconButton(
+                    icon: Icon(Icons.notifications),
+                    onPressed: () {showAlertDialog(context);}),
               ),
-            ),
-          ),
+              CircleAvatar(
+                    backgroundImage: CachedNetworkImageProvider(widget._user.photoURL)
+              ),
+            ],
+
         ),
 
-        //
         body: FutureBuilder<QuerySnapshot>(
           future: ref.get(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              if (snapshot.data.docs.length == 0) {
+              if (snapshot.data.docs.isEmpty) {
                 return Center(
                   child: Text(
                     "Non hai note !",
@@ -116,9 +118,9 @@ class _HomePageState extends State<HomePage> {
                 );
               }
               return ListView.builder(
-                itemCount: snapshot.data?.docs.length,
+                itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
-                  Random random = new Random();
+                  Random random =  Random();
                   Color bg = myColors[random.nextInt(4)];
                   Map data = snapshot.data.docs[index].data();
                   DateTime mydateTime = data['created'].toDate();
@@ -174,15 +176,13 @@ class _HomePageState extends State<HomePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Container(
-                                  child: Text(
-                                    "${data['description']}",
-                                    style: TextStyle(
-                                      fontSize: 12.0,
-                                      fontFamily: "Red Hat Text",
-                                      color: ColorConstant.black900,
-                                      fontWeight: FontWeight.w400,
-                                    ),
+                                Text(
+                                  "${data['description']}",
+                                  style: TextStyle(
+                                    fontSize: 12.0,
+                                    fontFamily: "Red Hat Text",
+                                    color: ColorConstant.black900,
+                                    fontWeight: FontWeight.w400,
                                   ),
                                 ),
                               ],
@@ -222,13 +222,18 @@ class _HomePageState extends State<HomePage> {
     Widget okButton = FlatButton(
       child: Text("OK"),
       onPressed: () {
-        _signOut();
-        Navigator.of(context).push(
+        FirebaseAuth.instance.signOut();
+        _auth.signOut();
+        Navigator.of(context)
+            .push(
           MaterialPageRoute(
-            builder: (context) => LoginPage(),
+              builder: (context) => LoginPage()
           ),
         );
-      },
+      }
+
+
+
     );
 
     // set up the AlertDialog
@@ -249,7 +254,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> _signOut() async {
-    await FirebaseAuth.instance.signOut();
-  }
 }
