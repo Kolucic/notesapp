@@ -12,6 +12,7 @@ import 'package:noteapp/pages/viewNote.dart';
 
 import '../utils/color_constant.dart';
 import '../utils/math_utils.dart';
+import 'login.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key, User user})
@@ -20,7 +21,7 @@ class HomePage extends StatefulWidget {
   final User _user;
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -88,6 +89,21 @@ class _HomePageState extends State<HomePage> {
           ),
           elevation: 0.0,
           backgroundColor: ColorConstant.whiteA700,
+          leading: Padding(
+            padding: EdgeInsets.only(right: 2.0),
+            child: FloatingActionButton(
+              backgroundColor: ColorConstant.orange700,
+              onPressed: () {
+                showAlertDialog(context);
+              },
+              child: CircleAvatar(
+                backgroundImage: (CachedNetworkImageProvider(
+                  widget._user.photoURL,
+                )),
+              ),
+            ),
+          ),
+        ),
             leading: Container(),
             actions: <Widget>[
               Padding(
@@ -101,13 +117,12 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
 
-        ),
-
+        //
         body: FutureBuilder<QuerySnapshot>(
           future: ref.get(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              if (snapshot.data.docs.isEmpty) {
+              if (snapshot.data.docs.length == 0) {
                 return Center(
                   child: Text(
                     "Non hai note !",
@@ -118,9 +133,9 @@ class _HomePageState extends State<HomePage> {
                 );
               }
               return ListView.builder(
-                itemCount: snapshot.data.docs.length,
+                itemCount: snapshot.data?.docs.length,
                 itemBuilder: (context, index) {
-                  Random random =  Random();
+                  Random random = new Random();
                   Color bg = myColors[random.nextInt(4)];
                   Map data = snapshot.data.docs[index].data();
                   DateTime mydateTime = data['created'].toDate();

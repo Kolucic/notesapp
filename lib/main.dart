@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:noteapp/pages/homepage.dart';
 import 'package:noteapp/pages/login.dart';
 
 void main() async {
@@ -17,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light().copyWith(
         primaryColor: Colors.white,
       ),
-      home: LoginPage(),
+      home: FirebaseAuth.instance.currentUser == null ? LoginPage() :  HomePage(user: FirebaseAuth.instance.currentUser),
     );
   }
 }

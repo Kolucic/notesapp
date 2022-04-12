@@ -1,7 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:noteapp/pages/homepage.dart';
 
 GoogleSignIn googleSignIn = GoogleSignIn();
@@ -39,7 +39,8 @@ Future<void> signInWithGoogle(BuildContext context) async {
 
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => HomePage(),
+              builder: (context) =>  HomePage(user: user,
+              ),
             ),
           );
         } else {
@@ -48,7 +49,8 @@ Future<void> signInWithGoogle(BuildContext context) async {
 
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => HomePage(),
+              builder: (context) => HomePage(user: user,
+              ),
             ),
           );
         }
@@ -58,4 +60,7 @@ Future<void> signInWithGoogle(BuildContext context) async {
     print(PlatformException);
     print("Accesso non riuscito!");
   }
+
+
 }
+

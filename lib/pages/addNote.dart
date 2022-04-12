@@ -2,6 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../utils/color_constant.dart';
+import '../utils/math_utils.dart';
+
 class AddNote extends StatefulWidget {
   @override
   _AddNoteState createState() => _AddNoteState();
@@ -15,94 +18,88 @@ class _AddNoteState extends State<AddNote> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: add,
+          label: Text(
+            "Salva nota",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: ColorConstant.whiteA700,
+              fontSize: getFontSize(
+                14,
+              ),
+              fontFamily: 'Red Hat Text',
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          backgroundColor: ColorConstant.orange700,
+        ),
+
+        appBar: AppBar(
+          title:TextFormField(
+            decoration: InputDecoration.collapsed(
+              hintText: "Titolo",
+            ),
+            style: TextStyle(
+              fontSize: 24.0,
+              overflow: TextOverflow.ellipsis,
+              fontFamily: "Red Hat Display",
+              fontWeight: FontWeight.w700,
+              color: ColorConstant.black900,
+            ),
+            onChanged: (_val) {
+              title = _val;
+            },
+          ),
+          elevation: 0.0,
+          backgroundColor: ColorConstant.whiteA700,
+          leading:ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Icon(
+              Icons.arrow_back_ios_outlined,
+              size: 24.0,
+              color: ColorConstant.black900,
+            ),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(
+                ColorConstant.whiteA700,
+              ),
+              padding: MaterialStateProperty.all(
+                EdgeInsets.symmetric(
+                  horizontal: 25.0,
+                  vertical: 8.0,
+                ),
+              ),
+
+            ),
+
+          ),
+
+        ),
+
         body: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(12.0),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Icon(
-                        Icons.arrow_back_ios_new_outlined,
-                        size: 24.0,
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          Colors.grey[700],
-                        ),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: add,
-                      child: Text(
-                        "Save",
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontFamily: "lato",
-                          color: Colors.white,
-                        ),
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          Colors.grey[700],
-                        ),
-                        padding: MaterialStateProperty.all(
-                          EdgeInsets.symmetric(
-                            horizontal: 25.0,
-                            vertical: 8.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.75,
+              padding: const EdgeInsets.only(top: 12.0),
+              child: TextFormField(
+                decoration: InputDecoration.collapsed(
+                  hintText: 'Scrivi...',
                 ),
-                SizedBox(
-                  height: 12.0,
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontFamily: "Red Hat Text",
+                  color: Colors.grey,
                 ),
-                Form(
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        decoration: InputDecoration.collapsed(
-                          hintText: 'Title',
-                        ),
-                        style: TextStyle(
-                          fontSize: 32.0,
-                          fontFamily: "lato",
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
-                        ),
-                        onChanged: (_val) {
-                          title = _val;
-                        },
-                      ),
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.75,
-                        padding: const EdgeInsets.only(top: 12.0),
-                        child: TextFormField(
-                          decoration: InputDecoration.collapsed(
-                            hintText: 'Scrivi...',
-                          ),
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            fontFamily: "lato",
-                            color: Colors.grey,
-                          ),
-                          onChanged: (_val) {
-                            des = _val;
-                          },
-                          maxLines: 20,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                onChanged: (_val) {
+                  des = _val;
+                },
+                maxLines: 20,
+              ),
             ),
           ),
         ),
