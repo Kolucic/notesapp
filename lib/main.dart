@@ -6,13 +6,12 @@ import 'package:noteapp/pages/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-   await Firebase.initializeApp();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light().copyWith(
         primaryColor: Colors.white,
       ),
-      home:  FirebaseAuth.instance.currentUser == null ? LoginPage() : HomePage(),
+      home: FirebaseAuth.instance.currentUser == null ? LoginPage() :  HomePage(user: FirebaseAuth.instance.currentUser),
     );
   }
 }

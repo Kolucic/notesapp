@@ -80,9 +80,6 @@ class _AddNoteState extends State<AddNote> {
 
         ),
 
-
-
-
         body: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(12.0),

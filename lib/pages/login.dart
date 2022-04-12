@@ -1,17 +1,25 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:noteapp/controller/google_auth.dart';
 import 'package:noteapp/utils/color_constant.dart';
 import 'package:noteapp/utils/math_utils.dart';
 
+
+
 class LoginPage extends StatefulWidget {
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
+
 class _LoginPageState extends State<LoginPage> {
+
   @override
   Widget build(BuildContext context) {
-    signInWithGoogle(context);
     return SafeArea(
       child: Scaffold(
         backgroundColor: ColorConstant.whiteA700,
@@ -140,22 +148,22 @@ class _LoginPageState extends State<LoginPage> {
                                 onPressed: () {
                                   signInWithGoogle(context);
                                 },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Continua con Google",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: ColorConstant.whiteA700,
-                                        fontSize: getFontSize(
-                                          14,
-                                        ),
-                                        fontFamily: 'Red Hat Text',
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                    MaterialStateProperty.all(ColorConstant.orange700)// and this
+                                ),
+                                child: Text(
+                                  "Continua con Google",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    backgroundColor: ColorConstant.orange700,
+                                    color: ColorConstant.whiteA700,
+                                    fontSize: getFontSize(
+                                      14,
                                     ),
-                                  ],
+                                    fontFamily: 'Red Hat Text',
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ),
@@ -170,4 +178,5 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
 }

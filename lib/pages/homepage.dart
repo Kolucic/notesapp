@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +11,16 @@ import 'package:noteapp/pages/viewNote.dart';
 
 import '../utils/color_constant.dart';
 import '../utils/math_utils.dart';
+import 'login.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({Key key, User user})
+      : _user = user,
+        super(key: key);
+  final User _user;
+
   @override
-  State<HomePage> createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -77,6 +84,20 @@ class _HomePageState extends State<HomePage> {
           ),
           elevation: 0.0,
           backgroundColor: ColorConstant.whiteA700,
+          leading: Padding(
+            padding: EdgeInsets.only(right: 2.0),
+            child: FloatingActionButton(
+              backgroundColor: ColorConstant.orange700,
+              onPressed: () {
+                showAlertDialog(context);
+              },
+              child: CircleAvatar(
+                backgroundImage: (CachedNetworkImageProvider(
+                  widget._user.photoURL,
+                )),
+              ),
+            ),
+          ),
         ),
 
         //
@@ -194,5 +215,41 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        _signOut();
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => LoginPage(),
+          ),
+        );
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Sicuro di voler uscire?"),
+      content: Text("Ritornerai alla pagina principale."),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  Future<void> _signOut() async {
+    await FirebaseAuth.instance.signOut();
   }
 }
