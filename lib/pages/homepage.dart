@@ -98,8 +98,9 @@ class _HomePageState extends State<HomePage> {
               return ListView.builder(
                 itemCount: snapshot.data?.docs.length,
                 itemBuilder: (context, index) {
-                  Random random = new Random();
-                  Color bg = myColors[random.nextInt(4)];
+                  String aStr = snapshot.data.docs[index].id.replaceAll(new RegExp(r'[^0-9]'),'');
+                  int noteColor= int.parse(aStr);
+                  Color bg = myColors[noteColor%4];
                   Map data = snapshot.data.docs[index].data();
                   DateTime mydateTime = data['created'].toDate();
                   String formattedTime =
