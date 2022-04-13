@@ -65,40 +65,30 @@ class _ViewNoteState extends State<ViewNote> {
               }
             },
           ),
-          leading: FloatingActionButton(
-            backgroundColor: ColorConstant.whiteA700,
-            elevation: 0.0,
+          leading: IconButton(
+            icon: Image.asset("assets/images/arrow_back_black_24dp 2.png"),
+            color: ColorConstant.whiteA700,
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: IconButton(
-              icon: Image.asset("assets/images/arrow_back_black_24dp 2.png"),
-            ),
           ),
 
           actions: <Widget>[
             if(edit == false)
-              FloatingActionButton(
-                backgroundColor: ColorConstant.whiteA700,
-                elevation: 0.0,
-
+              IconButton(
+                icon: Image.asset("assets/images/Vector.png"),
+                color: ColorConstant.whiteA700,
                 onPressed: () {
                   setState(() {
                     edit = !edit;
                   });
                 },
-                child: IconButton(
-                  icon: Image.asset("assets/images/Vector.png"),
-                ),
               ),
 
-            FloatingActionButton(
-              backgroundColor: ColorConstant.whiteA700,
-              elevation: 0.0,
+            IconButton(
+              color: ColorConstant.whiteA700,
+              icon: Image.asset("assets/images/delete_black_24dp 3.png"),
               onPressed: delete,
-              child: IconButton(
-                icon: Image.asset("assets/images/delete_black_24dp 3.png"),
-              ),
             ),
           ],
 
