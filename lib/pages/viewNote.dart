@@ -18,6 +18,7 @@ class _ViewNoteState extends State<ViewNote> {
   String des;
 
   bool edit = false;
+
   GlobalKey<FormState> key = GlobalKey<FormState>();
 
   @override
@@ -26,14 +27,14 @@ class _ViewNoteState extends State<ViewNote> {
     des = widget.data['description'];
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: edit
-            ? FloatingActionButton(
+        backgroundColor: ColorConstant.whiteA700,
+        floatingActionButton: edit ?
+        FloatingActionButton(
                 onPressed: save,
                 child: Icon(
                   Icons.save_rounded,
                   color: Colors.white,
                 ),
-
                 backgroundColor: ColorConstant.orange700,
               )
             : null,
@@ -49,7 +50,7 @@ class _ViewNoteState extends State<ViewNote> {
               fontSize: 26.0,
               fontFamily: "Red Hat Display",
               fontWeight: FontWeight.bold,
-              color: Colors.grey,
+              color: Colors.black,
             ),
             initialValue: widget.data['title'],
             enabled: edit,
@@ -76,31 +77,29 @@ class _ViewNoteState extends State<ViewNote> {
           ),
 
           actions: <Widget>[
-            FloatingActionButton(
-              backgroundColor: ColorConstant.whiteA700,
-              elevation: 0.0,
-              onPressed: () {
-                setState(() {
-                  edit = !edit;
-                });
-              },
+            if(edit == false)
+              FloatingActionButton(
+                backgroundColor: ColorConstant.whiteA700,
+                elevation: 0.0,
 
-              child: IconButton(
-                icon: Image.asset("assets/images/Vector.png"),
+                onPressed: () {
+                  setState(() {
+                    edit = !edit;
+                  });
+                },
+                child: IconButton(
+                  icon: Image.asset("assets/images/Vector.png"),
+                ),
               ),
-            ),
+
             FloatingActionButton(
               backgroundColor: ColorConstant.whiteA700,
               elevation: 0.0,
               onPressed: delete,
               child: IconButton(
-
                 icon: Image.asset("assets/images/delete_black_24dp 3.png"),
-
               ),
-
             ),
-
           ],
 
         ),
@@ -121,7 +120,7 @@ class _ViewNoteState extends State<ViewNote> {
                         style: TextStyle(
                           fontSize: 18.0,
                           fontFamily: "Red Hat Text",
-                          color: Colors.grey,
+                          color: Colors.black,
                         ),
                         initialValue: widget.data['description'],
                         enabled: edit,
