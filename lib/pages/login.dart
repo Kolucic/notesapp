@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,17 +6,12 @@ import 'package:noteapp/controller/google_auth.dart';
 import 'package:noteapp/utils/color_constant.dart';
 import 'package:noteapp/utils/math_utils.dart';
 
-
-
 class LoginPage extends StatefulWidget {
-
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-
 class _LoginPageState extends State<LoginPage> {
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -38,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: SingleChildScrollView(
                     padding: EdgeInsets.only(
                       top: getVerticalSize(
-                        292.00,
+                        125.00,
                       ),
                       bottom: getVerticalSize(
                         20.00,
@@ -52,20 +46,19 @@ class _LoginPageState extends State<LoginPage> {
                           Padding(
                             padding: EdgeInsets.only(
                               left: getHorizontalSize(
-                                41.00,
+                                40.00,
                               ),
                               right: getHorizontalSize(
-                                41.00,
+                                40.00,
                               ),
                             ),
                             child: Text(
                               "Cloud note",
-                              overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: ColorConstant.black900,
                                 fontSize: getFontSize(
-                                  24,
+                                  28,
                                 ),
                                 fontFamily: 'Red Hat Display',
                                 fontWeight: FontWeight.w700,
@@ -78,23 +71,22 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             margin: EdgeInsets.only(
                               left: getHorizontalSize(
-                                41.00,
+                                40.00,
                               ),
                               top: getVerticalSize(
                                 30.00,
                               ),
                               right: getHorizontalSize(
-                                41.00,
+                                40.00,
                               ),
                             ),
                             child: Text(
                               "Crea e gestisci le tue note collegandole al tuo account Google.",
-                              maxLines: null,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: ColorConstant.black900,
                                 fontSize: getFontSize(
-                                  12,
+                                  16,
                                 ),
                                 fontFamily: 'Red Hat Text',
                                 fontWeight: FontWeight.w400,
@@ -104,13 +96,13 @@ class _LoginPageState extends State<LoginPage> {
                           Padding(
                             padding: EdgeInsets.only(
                               left: getHorizontalSize(
-                                41.00,
+                                40.00,
                               ),
                               top: getVerticalSize(
-                                47.00,
+                                48.00,
                               ),
                               right: getHorizontalSize(
-                                41.00,
+                                40.00,
                               ),
                             ),
                             child: Container(
@@ -124,39 +116,29 @@ class _LoginPageState extends State<LoginPage> {
                               decoration: BoxDecoration(
                                 color: ColorConstant.orange700,
                                 borderRadius: BorderRadius.circular(
-                                  getHorizontalSize(
-                                    16.00,
-                                  ),
+                                  getHorizontalSize(16.00,),
                                 ),
                                 boxShadow: [
                                   BoxShadow(
                                     color: ColorConstant.orange50,
-                                    spreadRadius: getHorizontalSize(
-                                      2.00,
-                                    ),
-                                    blurRadius: getHorizontalSize(
-                                      2.00,
-                                    ),
-                                    offset: Offset(
-                                      0,
-                                      4,
-                                    ),
+                                    spreadRadius: getHorizontalSize(2.00,),
+                                    blurRadius: getHorizontalSize(2.00,),
+                                    offset: Offset(0, 4,),
                                   ),
                                 ],
                               ),
-                              child: ElevatedButton(
+                              child: TextButton(
                                 onPressed: () {
                                   signInWithGoogle(context);
                                 },
                                 style: ButtonStyle(
-                                    backgroundColor:
-                                    MaterialStateProperty.all(ColorConstant.orange700)// and this
-                                ),
+                                    backgroundColor: MaterialStateProperty.all(
+                                        ColorConstant.orange700) // and this
+                                    ),
                                 child: Text(
                                   "Continua con Google",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    backgroundColor: ColorConstant.orange700,
                                     color: ColorConstant.whiteA700,
                                     fontSize: getFontSize(
                                       14,
@@ -178,5 +160,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
 }
