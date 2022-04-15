@@ -25,9 +25,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   final _auth = FirebaseAuth.instance;
-
 
   CollectionReference ref = FirebaseFirestore.instance
       .collection('users')
@@ -47,34 +45,7 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         backgroundColor: ColorConstant.whiteA700,
 
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            Navigator.of(context)
-                .push(
-              MaterialPageRoute(
-                builder: (context) => AddNote(),
-              ),
-            )
-                .then((value) {
-              print("Calling a set state");
-              setState(() {});
-            });
-          },
-          label: Text(
-            "Aggiungi una nota",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: ColorConstant.whiteA700,
-              fontSize: getFontSize(
-                14,
-              ),
-              fontFamily: 'Red Hat Text',
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          backgroundColor: ColorConstant.orange700,
-        ),
-
+        floatingActionButton: buildFloatingActionButton(context),
         //
         appBar: AppBar(
           title: Text(
@@ -89,35 +60,27 @@ class _HomePageState extends State<HomePage> {
           ),
           elevation: 0.0,
           backgroundColor: ColorConstant.whiteA700,
-          leading: Padding(
-            padding: EdgeInsets.only(right: 2.0),
-            child: FloatingActionButton(
-              backgroundColor: ColorConstant.orange700,
-              onPressed: () {
-                showAlertDialog(context);
-              },
-              child: CircleAvatar(
-                backgroundImage: (CachedNetworkImageProvider(
-                  widget._user.photoURL,
-                )),
+          actions: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  showAlertDialog(context);
+                },
+                child: photoUser(widget: widget),
+                style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(),
+                  primary: ColorConstant.orange700,
+                  minimumSize: const Size(40, 10),
+                  maximumSize: const Size(60, 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                ),
               ),
             ),
-          ),
+          ],
         ),
-            leading: Container(),
-            actions: <Widget>[
-              Padding(
-                padding:  EdgeInsets.only( left: 20.0),
-                child: IconButton(
-                    icon: Icon(Icons.notifications),
-                    onPressed: () {showAlertDialog(context);}),
-              ),
-              CircleAvatar(
-                    backgroundImage: CachedNetworkImageProvider(widget._user.photoURL)
-              ),
-            ],
 
-        //
         body: FutureBuilder<QuerySnapshot>(
           future: ref.get(),
           builder: (context, snapshot) {
@@ -135,8 +98,9 @@ class _HomePageState extends State<HomePage> {
               return ListView.builder(
                 itemCount: snapshot.data?.docs.length,
                 itemBuilder: (context, index) {
-                  Random random = new Random();
-                  Color bg = myColors[random.nextInt(4)];
+                  String aStr = snapshot.data.docs[index].id.replaceAll(new RegExp(r'[^0-9]'),'');
+                  int noteColor= int.parse(aStr);
+                  Color bg = myColors[noteColor%4];
                   Map data = snapshot.data.docs[index].data();
                   DateTime mydateTime = data['created'].toDate();
                   String formattedTime =
@@ -157,67 +121,8 @@ class _HomePageState extends State<HomePage> {
                         setState(() {});
                       });
                     },
-                    child: Card(
-                      color: bg,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            left: getHorizontalSize(20.00),
-                            top: getVerticalSize(17.00),
-                            right: getHorizontalSize(20.00)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                  getHorizontalSize(
-                                    16.00,
-                                  ),
-                                ),
-                              ),
-                              child: Text(
-                                "${data['title']}",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontFamily: "Red Hat Display",
-                                  fontWeight: FontWeight.w600,
-                                  color: ColorConstant.black900,
-                                ),
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "${data['description']}",
-                                  style: TextStyle(
-                                    fontSize: 12.0,
-                                    fontFamily: "Red Hat Text",
-                                    color: ColorConstant.black900,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              alignment: Alignment.centerRight,
-                              child: Text(
-                                formattedTime,
-                                style: TextStyle(
-                                  fontSize: 12.0,
-                                  fontFamily: "Red Hat Text",
-                                  color: ColorConstant.black900,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    child:
+                        Note(bg: bg, data: data, formattedTime: formattedTime),
                   );
                 },
               );
@@ -232,31 +137,54 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  showAlertDialog(BuildContext context) {
-    // set up the button
-    Widget okButton = FlatButton(
-      child: Text("OK"),
+  FloatingActionButton buildFloatingActionButton(BuildContext context) {
+    return FloatingActionButton.extended(
       onPressed: () {
-        FirebaseAuth.instance.signOut();
-        _auth.signOut();
         Navigator.of(context)
             .push(
           MaterialPageRoute(
-              builder: (context) => LoginPage()
+            builder: (context) => AddNote(),
           ),
-        );
-      }
-
-
-
+        )
+            .then((value) {
+          print("Calling a set state");
+          setState(() {});
+        });
+      },
+      label: Text(
+        "Aggiungi una nota",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: ColorConstant.whiteA700,
+          fontSize: getFontSize(
+            14,
+          ),
+          fontFamily: 'Red Hat Text',
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      backgroundColor: ColorConstant.orange700,
     );
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget logOutButton = TextButton(
+        child: Text("OK"),
+        onPressed: () {
+          FirebaseAuth.instance.signOut();
+          _auth.signOut();
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => LoginPage()),
+          );
+        });
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text("Sicuro di voler uscire?"),
       content: Text("Ritornerai alla pagina principale."),
       actions: [
-        okButton,
+        logOutButton,
       ],
     );
 
@@ -268,5 +196,101 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+}
 
+class Note extends StatelessWidget {
+  const Note({
+    Key key,
+    @required this.bg,
+    @required this.data,
+    @required this.formattedTime,
+  }) : super(key: key);
+
+  final Color bg;
+  final Map data;
+  final String formattedTime;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: bg,
+      child: Padding(
+        padding: EdgeInsets.only(
+            left: getHorizontalSize(20.00),
+            top: getVerticalSize(17.00),
+            right: getHorizontalSize(20.00)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(
+                  getHorizontalSize(
+                    16.00,
+                  ),
+                ),
+              ),
+              child: Text(
+                "${data['title']}",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontFamily: "Red Hat Display",
+                  fontWeight: FontWeight.w600,
+                  color: ColorConstant.black900,
+                ),
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "${data['description']}",
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    fontFamily: "Red Hat Text",
+                    color: ColorConstant.black900,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              alignment: Alignment.centerRight,
+              child: Text(
+                formattedTime,
+                style: TextStyle(
+                  fontSize: 12.0,
+                  fontFamily: "Red Hat Text",
+                  color: ColorConstant.black900,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class photoUser extends StatelessWidget {
+  const photoUser({
+    Key key,
+    @required this.widget,
+  }) : super(key: key);
+
+  final HomePage widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+      backgroundImage: (CachedNetworkImageProvider(
+        widget._user.photoURL,
+      )),
+      maxRadius: 20,
+    );
+  }
 }
