@@ -54,17 +54,12 @@ class _AddNoteState extends State<AddNote> {
           ),
           elevation: 0.0,
           backgroundColor: ColorConstant.whiteA700,
-          leading:FloatingActionButton(
-            elevation: 0.0,
-            backgroundColor: ColorConstant.whiteA700,
+          leading:IconButton(
+            icon: Image.asset("assets/images/arrow_back_black_24dp 2.png"),
+            color: ColorConstant.black900,
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: IconButton(
-              icon: Image.asset("assets/images/arrow_back_black_24dp 2.png"),
-              color: ColorConstant.black900,
-            ),
-
           ),
 
         ),
