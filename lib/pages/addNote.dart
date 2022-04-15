@@ -54,28 +54,12 @@ class _AddNoteState extends State<AddNote> {
           ),
           elevation: 0.0,
           backgroundColor: ColorConstant.whiteA700,
-          leading:ElevatedButton(
+          leading:IconButton(
+            icon: Image.asset("assets/images/arrow_back_black_24dp 2.png"),
+            color: ColorConstant.black900,
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Icon(
-              Icons.arrow_back_ios_outlined,
-              size: 24.0,
-              color: ColorConstant.black900,
-            ),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(
-                ColorConstant.whiteA700,
-              ),
-              padding: MaterialStateProperty.all(
-                EdgeInsets.symmetric(
-                  horizontal: 25.0,
-                  vertical: 8.0,
-                ),
-              ),
-
-            ),
-
           ),
 
         ),

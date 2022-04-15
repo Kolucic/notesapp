@@ -84,7 +84,7 @@ flutter:
   fonts:
     - family: lato
       fonts:
-         - asset: assets/fonts/Lato-Bold.ttf
-         - asset: assets/fonts/Lato-Regular.ttf
+         - asset: assets/fonts/RedHatDisplay.ttf
+         - asset: assets/fonts/RedHatText.ttf
            weight: 800
 
